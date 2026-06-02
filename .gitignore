@@ -1,0 +1,58 @@
+# ── Dependencies ────────────────────────────────────────────
+node_modules/
+.pnpm-store/
+.pnpm-debug.log*
+
+# ── Build Outputs ──────────────────────────────────────────
+dist/
+build/
+*.tsbuildinfo
+
+# ── Environment variables ──────────────────────────────────
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+
+# ── Logs ───────────────────────────────────────────────────
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# ── OS files ───────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDE / Editors ──────────────────────────────────────────
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+*.sublime-workspace
+*.swp
+*.swo
+
+# ── Test coverage ──────────────────────────────────────────
+coverage/
+.nyc_output/
+
+# ── Temp files ─────────────────────────────────────────────
+.tmp
+.temp
+*.pid
+*.seed
+
+# ── Docker ─────────────────────────────────────────────────
+.docker/
+docker-compose.override.yml
+
+# ── Misc ───────────────────────────────────────────────────
+*.pem
+.DS_Store?
