@@ -1,16 +1,16 @@
 FROM node:20-alpine AS build
 
 # Habilitamos pnpm
-RUN npm install -g pnpm
+RUN npm install -g pnpm@8
 
 # Establecer directorio de trabajo
 WORKDIR /app
 
 # Copiar archivos de dependencias
-COPY package.json pnpm-lock.yaml* ./
+COPY package.json pnpm-lock.yaml ./
 
 # Instalar dependencias
-RUN pnpm install
+RUN pnpm install --frozen-lockfile
 
 # Copiar el resto de la aplicación
 COPY . .
