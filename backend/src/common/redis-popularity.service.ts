@@ -34,6 +34,22 @@ export class RedisPopularityService implements OnModuleInit, OnModuleDestroy {
     await this.client?.quit();
   }
 
+  async init() {
+    if (!this._connected) return;
+    try {
+      const exists = await this.client.exists('airport_popularity');
+      if (!exists) {
+        // Crear ZSET vacío y asignarle TTL de 24hs
+        await this.client.zAdd('airport_popularity', [{ score: 0, value: '_init_' }]);
+        await this.client.zRem('airport_popularity', '_init_');
+        await this.client.expire('airport_popularity', 86400);
+        this.logger.log('ZSET de popularidad inicializado (vacío, TTL 24hs)');
+      }
+    } catch (err) {
+      this.logger.error(`Error al inicializar popularidad: ${err.message}`);
+    }
+  }
+
   async increment(member: string) {
     if (!this._connected) return;
     try {

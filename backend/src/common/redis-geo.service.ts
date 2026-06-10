@@ -55,9 +55,9 @@ export class RedisGeoService implements OnModuleInit, OnModuleDestroy {
   async geoSearch(key: string, longitude: number, latitude: number, radius: number): Promise<string[]> {
     if (!this._connected) return [];
     try {
-      return await this.client.geoSearch(key, { longitude, latitude }, { radius, unit: 'km' });
+      return await this.client.geoRadius(key, { longitude, latitude }, radius, { unit: 'km' });
     } catch (err) {
-      this.logger.error(`geoSearch error: ${err.message}`);
+      this.logger.error(`geoRadius error: ${err.message}`);
       return [];
     }
   }

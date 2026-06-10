@@ -2,6 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RedisGeoService } from '../common/redis-geo.service';
+import { RedisPopularityService } from '../common/redis-popularity.service';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -12,6 +13,7 @@ export class SeedService implements OnModuleInit {
   constructor(
     @InjectModel('Airport') private readonly airportModel: Model<any>,
     private readonly redisGeo: RedisGeoService,
+    private readonly redisPop: RedisPopularityService,
   ) {}
 
   async onModuleInit() {
@@ -29,7 +31,7 @@ export class SeedService implements OnModuleInit {
 
     this.logger.log('Iniciando carga de datos...');
 
-    const dataPath = path.join(__dirname, '..', 'data', 'data_trasport.json');
+    const dataPath = path.join(__dirname, '..', 'data', 'data_transport.json');
     const airports = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
 
     for (const airport of airports) {
@@ -44,6 +46,9 @@ export class SeedService implements OnModuleInit {
         await this.redisGeo.geoAdd('airports-geo', airport.lng, airport.lat, member);
       }
     }
+
+    // Inicializar ZSET de popularidad vacío con TTL de 24hs
+    await this.redisPop.init();
 
     this.logger.log(`Carga completada: ${airports.length} aeropuertos.`);
   }
